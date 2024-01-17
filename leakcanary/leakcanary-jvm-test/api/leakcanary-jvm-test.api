@@ -1,0 +1,32 @@
+public final class leakcanary/HotSpotHeapDumper : leakcanary/HeapDumper {
+	public static final field INSTANCE Lleakcanary/HotSpotHeapDumper;
+	public fun dumpHeap (Ljava/io/File;)V
+}
+
+public final class leakcanary/JvmLiveObjectGrowthDetectorConfig {
+	public fun <init> ()V
+	public fun <init> (IILjava/util/List;Lleakcanary/HeapDumpFileProvider;Lleakcanary/HeapDumper;)V
+	public synthetic fun <init> (IILjava/util/List;Lleakcanary/HeapDumpFileProvider;Lleakcanary/HeapDumper;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Lleakcanary/HeapDumpFileProvider;
+	public final fun component5 ()Lleakcanary/HeapDumper;
+	public final fun copy (IILjava/util/List;Lleakcanary/HeapDumpFileProvider;Lleakcanary/HeapDumper;)Lleakcanary/JvmLiveObjectGrowthDetectorConfig;
+	public static synthetic fun copy$default (Lleakcanary/JvmLiveObjectGrowthDetectorConfig;IILjava/util/List;Lleakcanary/HeapDumpFileProvider;Lleakcanary/HeapDumper;ILjava/lang/Object;)Lleakcanary/JvmLiveObjectGrowthDetectorConfig;
+	public final fun create ()Lshark/LiveObjectGrowthDetector;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHeapDumpFileProvider ()Lleakcanary/HeapDumpFileProvider;
+	public final fun getHeapDumper ()Lleakcanary/HeapDumper;
+	public final fun getMaxHeapDumps ()I
+	public final fun getReferenceMatchers ()Ljava/util/List;
+	public final fun getScenarioLoopsPerDump ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class leakcanary/TempHeapDumpFileProvider : leakcanary/HeapDumpFileProvider {
+	public static final field INSTANCE Lleakcanary/TempHeapDumpFileProvider;
+	public fun newHeapDumpFile ()Ljava/io/File;
+}
+

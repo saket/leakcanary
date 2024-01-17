@@ -215,10 +215,63 @@ public final class shark/HeapAnalyzer {
 	public static synthetic fun analyze$default (Lshark/HeapAnalyzer;Ljava/io/File;Lshark/LeakingObjectFinder;Ljava/util/List;ZLjava/util/List;Lshark/MetadataExtractor;Lshark/ProguardMapping;ILjava/lang/Object;)Lshark/HeapAnalysis;
 }
 
+public final class shark/HeapDumpObjectGrowthDetector {
+	public fun <init> (Lshark/GcRootProvider;Lshark/ReferenceReader$Factory;)V
+	public final fun findGrowingObjects (Lshark/CloseableHeapGraph;ILshark/InputHeapTraversal;)Lshark/HeapTraversal;
+	public static synthetic fun findGrowingObjects$default (Lshark/HeapDumpObjectGrowthDetector;Lshark/CloseableHeapGraph;ILshark/InputHeapTraversal;ILjava/lang/Object;)Lshark/HeapTraversal;
+}
+
+public final class shark/HeapDumpSequenceObjectGrowthDetector {
+	public fun <init> (Lshark/HeapDumpObjectGrowthDetector;)V
+	public final fun findRepeatedlyGrowingObjects (Lkotlin/sequences/Sequence;)Ljava/util/List;
+}
+
+public final class shark/HeapDumpingObjectGrowthDetector : shark/LiveObjectGrowthDetector {
+	public fun <init> (ILshark/HeapGraphProvider;ILshark/HeapDumpSequenceObjectGrowthDetector;)V
+	public fun findRepeatedlyGrowingObjects (Lkotlin/jvm/functions/Function0;)Ljava/util/List;
+}
+
+public final class shark/HeapGraphAfterRoundTrips {
+	public fun <init> (Lshark/CloseableHeapGraph;I)V
+	public final fun component1 ()Lshark/CloseableHeapGraph;
+	public final fun component2 ()I
+	public final fun copy (Lshark/CloseableHeapGraph;I)Lshark/HeapGraphAfterRoundTrips;
+	public static synthetic fun copy$default (Lshark/HeapGraphAfterRoundTrips;Lshark/CloseableHeapGraph;IILjava/lang/Object;)Lshark/HeapGraphAfterRoundTrips;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHeapGraph ()Lshark/CloseableHeapGraph;
+	public final fun getScenarioRoundTrips ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class shark/HeapTraversal : shark/InputHeapTraversal {
+	public static final field Companion Lshark/HeapTraversal$Companion;
+	public abstract fun getShortestPathTree ()Lshark/ShortestPathObjectNode;
+}
+
+public final class shark/HeapTraversal$Companion {
+	public final fun getIgnoredReferences ()Ljava/util/List;
+}
+
+public final class shark/HeapTraversalWithDiff : shark/HeapTraversal {
+	public fun <init> (Lshark/ShortestPathObjectNode;Ljava/util/List;)V
+	public final fun getGrowingNodes ()Ljava/util/List;
+	public fun getShortestPathTree ()Lshark/ShortestPathObjectNode;
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class shark/IgnoredReferenceMatcher : shark/ReferenceMatcher {
 	public fun <init> (Lshark/ReferencePattern;)V
 	public fun getPattern ()Lshark/ReferencePattern;
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class shark/InitialHeapTraversal : shark/HeapTraversal {
+	public fun <init> (Lshark/ShortestPathObjectNode;)V
+	public fun getShortestPathTree ()Lshark/ShortestPathObjectNode;
+}
+
+public abstract interface class shark/InputHeapTraversal {
 }
 
 public final class shark/JavaLocalReferenceReader : shark/ChainingInstanceReferenceReader$VirtualInstanceReferenceReader {
@@ -456,6 +509,26 @@ public final class shark/LibraryLeakReferenceMatcher : shark/ReferenceMatcher {
 	public fun toString ()Ljava/lang/String;
 }
 
+public abstract interface class shark/LiveObjectGrowthDetector {
+	public abstract fun findRepeatedlyGrowingObjects (Lkotlin/jvm/functions/Function0;)Ljava/util/List;
+}
+
+public final class shark/LiveObjectGrowthDetector$Config {
+	public fun <init> (IILshark/HeapGraphProvider;Lshark/GcRootProvider;Lshark/ReferenceReader$Factory;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()Lshark/HeapGraphProvider;
+	public final fun copy (IILshark/HeapGraphProvider;Lshark/GcRootProvider;Lshark/ReferenceReader$Factory;)Lshark/LiveObjectGrowthDetector$Config;
+	public static synthetic fun copy$default (Lshark/LiveObjectGrowthDetector$Config;IILshark/HeapGraphProvider;Lshark/GcRootProvider;Lshark/ReferenceReader$Factory;ILjava/lang/Object;)Lshark/LiveObjectGrowthDetector$Config;
+	public final fun create ()Lshark/LiveObjectGrowthDetector;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHeapGraphProvider ()Lshark/HeapGraphProvider;
+	public final fun getMaxHeapDumps ()I
+	public final fun getScenarioLoopsPerDump ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class shark/MatchingGcRootProvider : shark/GcRootProvider {
 	public fun <init> (Ljava/util/List;)V
 	public fun provideGcRoots (Lshark/HeapGraph;)Lkotlin/sequences/Sequence;
@@ -468,6 +541,10 @@ public abstract interface class shark/MetadataExtractor {
 
 public final class shark/MetadataExtractor$Companion {
 	public final fun getNO_OP ()Lshark/MetadataExtractor;
+}
+
+public final class shark/NoHeapTraversalYet : shark/InputHeapTraversal {
+	public static final field INSTANCE Lshark/NoHeapTraversalYet;
 }
 
 public final class shark/ObjectDominators {
@@ -540,6 +617,28 @@ public final class shark/ObjectReporter {
 	public final fun whenInstanceOf (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function2;)V
 }
 
+public abstract interface class shark/OfflineObjectGrowthDetector {
+	public abstract fun findRepeatedlyGrowingObjects (Ljava/util/List;)Ljava/util/List;
+}
+
+public final class shark/OfflineObjectGrowthDetector$Config {
+	public fun <init> (Lshark/GcRootProvider;Lshark/ReferenceReader$Factory;)V
+	public final fun component1 ()Lshark/GcRootProvider;
+	public final fun component2 ()Lshark/ReferenceReader$Factory;
+	public final fun copy (Lshark/GcRootProvider;Lshark/ReferenceReader$Factory;)Lshark/OfflineObjectGrowthDetector$Config;
+	public static synthetic fun copy$default (Lshark/OfflineObjectGrowthDetector$Config;Lshark/GcRootProvider;Lshark/ReferenceReader$Factory;ILjava/lang/Object;)Lshark/OfflineObjectGrowthDetector$Config;
+	public final fun create ()Lshark/OfflineObjectGrowthDetector;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getGcRootProvider ()Lshark/GcRootProvider;
+	public final fun getReferenceReaderFactory ()Lshark/ReferenceReader$Factory;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class shark/OfflineObjectGrowthDetectorKt {
+	public static final fun findRepeatedlyGrowingObjects (Lshark/OfflineObjectGrowthDetector;Ljava/util/List;)Ljava/util/List;
+}
+
 public abstract interface class shark/OnAnalysisProgressListener {
 	public static final field Companion Lshark/OnAnalysisProgressListener$Companion;
 	public abstract fun onAnalysisProgress (Lshark/OnAnalysisProgressListener$Step;)V
@@ -575,6 +674,11 @@ public abstract class shark/OpenJdkInstanceRefReaders : java/lang/Enum, shark/Ch
 	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public static fun valueOf (Ljava/lang/String;)Lshark/OpenJdkInstanceRefReaders;
 	public static fun values ()[Lshark/OpenJdkInstanceRefReaders;
+}
+
+public final class shark/OpenJdkReferenceReaderFactory : shark/ReferenceReader$Factory {
+	public fun <init> (Ljava/util/List;)V
+	public fun createFor (Lshark/HeapGraph;)Lshark/ReferenceReader;
 }
 
 public final class shark/PathFindingResults {
@@ -754,6 +858,19 @@ public abstract interface class shark/ShortestPathFinder {
 
 public abstract interface class shark/ShortestPathFinder$Factory {
 	public abstract fun createFor (Lshark/HeapGraph;)Lshark/ShortestPathFinder;
+}
+
+public final class shark/ShortestPathObjectNode {
+	public fun <init> (Ljava/lang/String;Lshark/ShortestPathObjectNode;Z)V
+	public final fun getChildren ()Ljava/util/List;
+	public final fun getChildrenObjectCount ()I
+	public final fun getChildrenObjectCountIncrease ()I
+	public final fun getNodeAndEdgeName ()Ljava/lang/String;
+	public final fun getParent ()Lshark/ShortestPathObjectNode;
+	public final fun getSelfObjectCount ()I
+	public final fun getSelfObjectCountIncrease ()I
+	public final fun pathFromRootAsString ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class shark/VirtualizingMatchingReferenceReaderFactory : shark/ReferenceReader$Factory {
